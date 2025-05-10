@@ -1,0 +1,71 @@
+<!-- views/inventario.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Inventario - Punto de Venta</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    </head>
+
+    <body class="bg-light">
+
+        <!-- Incluye la barra de navegación desde la vista parcial 'navbar' -->
+        <%- include('partials/navbar') %>
+
+        <div class="container mt-4">
+            <h3 class="text-center mb-3">Inventario de Productos</h3>
+
+            <!-- Formulario para buscar productos por nombre o clave -->
+            <form class="mb-3" method="GET" action="/inventario">
+                <div class="input-group">
+                    <!-- Campo de entrada para búsqueda -->
+                    <input type="text" name="busqueda" class="form-control" placeholder="Buscar por nombre o clave"
+                        value="<%= busqueda %>">
+                    <!-- Botón para enviar la búsqueda -->
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                    <!-- Botón para restablecer la búsqueda y mostrar todos los productos -->
+                    <a href="/inventario" class="btn btn-secondary">Ver todos</a>
+                </div>
+            </form>
+
+            <!-- Tabla para mostrar los productos del inventario -->
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Clave</th>
+                        <th>Nombre</th>
+                        <th>Stock</th>
+                        <th>Stock Máx</th>
+                        <th>Fecha Registro</th>
+                        <th>Costo</th>
+                        <th>Precio Venta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Recorre y muestra cada producto recibido desde el backend -->
+                    <% productos.forEach(prod => { %>
+                        <tr>
+                            <!-- Clave del producto -->
+                            <td><%= prod.clave %></td>
+                            <!-- Nombre del producto -->
+                            <td><%= prod.nombre %></td>
+                            <!-- Stock actual del producto -->
+                            <td><%= prod.stock %></td>
+                            <!-- Stock máximo permitido -->
+                            <td><%= prod.stock_max %></td>
+                            <!-- Fecha de registro, formateada como cadena legible -->
+                            <td><%= new Date(prod.fecha_registro).toLocaleString() %></td>
+                            <!-- Costo del producto, con dos decimales -->
+                            <td>$<%= prod.costo.toFixed(2) %></td>
+                            <!-- Precio de venta al público, con dos decimales -->
+                            <td>$<%= prod.precio_venta.toFixed(2) %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+    </body>
+
+</html>

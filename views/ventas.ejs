@@ -1,0 +1,63 @@
+<!-- views/ventas.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Registrar Venta - Punto de Venta</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    </head>
+
+    <body class="bg-light">
+
+        <!-- Incluye una barra de navegación común desde la carpeta 'partials' -->
+        <%- include('partials/navbar') %>
+
+        <div class="container mt-4">
+            <h3 class="text-center mb-3">Registrar Venta</h3>
+
+            <!-- Muestra un mensaje (por ejemplo, confirmación o error) si existe -->
+            <% if (mensaje) { %>
+                <div class="alert alert-info">
+                    <%= mensaje %>
+                </div>
+            <% } %>
+
+            <!-- Formulario para registrar una nueva venta -->
+            <form method="POST" action="/ventas" class="card p-3">
+                
+                <!-- Selector de producto, muestra los productos disponibles y su stock -->
+                <div class="mb-3">
+                    <label>Producto</label>
+                    <select name="id_producto" class="form-select" required>
+                        <% productos.forEach(prod => { %>
+                            <option value="<%= prod.id_producto %>">
+                                <%= prod.nombre %> (Stock: <%= prod.stock %>)
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <!-- Campo para ingresar la cantidad a vender -->
+                <div class="mb-3">
+                    <label>Cantidad a vender</label>
+                    <input type="number" name="cantidad" class="form-control" min="1" required>
+                </div>
+
+                <!-- Selector para indicar el turno en el que se realiza la venta -->
+                <div class="mb-3">
+                    <label>Turno</label>
+                    <select name="turno" class="form-select" required>
+                        <option value="matutino">Matutino</option>
+                        <option value="vespertino">Vespertino</option>
+                    </select>
+                </div>
+
+                <!-- Botón para enviar el formulario -->
+                <button class="btn btn-success w-100">Registrar Venta</button>
+            </form>
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,95 @@
+<!-- views/cortes.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Generar Corte - Punto de Venta</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    </head>
+
+    <body class="bg-light">
+
+        <!-- Inserta la barra de navegación desde la vista parcial 'navbar' -->
+        <%- include('partials/navbar') %>
+
+        <div class="container mt-4">
+            <h3 class="text-center mb-3">Generar Corte de Venta</h3>
+
+            <!-- Muestra un mensaje de error si se recibe desde el servidor -->
+            <% if (mensaje) { %>
+                <div class="alert alert-danger">
+                    <%= mensaje %>
+                </div>
+            <% } %>
+
+            <!-- Formulario para solicitar el corte de ventas -->
+            <form method="POST" action="/cortes" class="card p-3 mb-4">
+
+                <!-- Selección del tipo de corte (parcial por turno o del día completo) -->
+                <div class="mb-3">
+                    <label>Tipo de corte</label>
+                    <select name="tipo_corte" class="form-select" required>
+                        <option value="parcial">Parcial (por turno)</option>
+                        <option value="dia">Corte del día (ambos turnos)</option>
+                    </select>
+                </div>
+
+                <!-- Campo para elegir la fecha sobre la que se desea hacer el corte -->
+                <div class="mb-3">
+                    <label>Fecha</label>
+                    <input type="date" name="fecha" class="form-control" required>
+                </div>
+
+                <!-- Selección del turno, solo relevante si se elige un corte parcial -->
+                <div class="mb-3">
+                    <label>Turno (solo para corte parcial)</label>
+                    <select name="turno" class="form-select">
+                        <option value="">-- Seleccione turno --</option>
+                        <option value="matutino">Matutino</option>
+                        <option value="vespertino">Vespertino</option>
+                    </select>
+                </div>
+
+                <!-- Botón para enviar el formulario y generar el corte -->
+                <button class="btn btn-secondary w-100">Generar Corte</button>
+            </form>
+
+            <!-- Si hay ventas encontradas según los filtros seleccionados, se muestran aquí -->
+            <% if (ventas.length > 0) { %>
+                <h5>Ventas encontradas:</h5>
+
+                <!-- Tabla que muestra el detalle de las ventas -->
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Fecha y hora</th>
+                            <th>Nombre del usuario</th>
+                            <th>Turno</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% ventas.forEach(v => { %>
+                            <tr>
+                                <!-- Fecha y hora de la venta, formateada a cadena legible -->
+                                <td><%= new Date(v.fecha_hora).toLocaleString() %></td>
+                                <!-- Nombre del cajero que hizo la venta -->
+                                <td><%= v.cajero %></td>
+                                <!-- Turno en que se realizó la venta -->
+                                <td><%= v.turno %></td>
+                                <!-- Total de la venta con dos decimales -->
+                                <td>$<%= v.total.toFixed(2) %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+
+                <!-- Muestra el total acumulado de las ventas en el corte -->
+                <h5 class="text-end">Total de ventas: <strong>$<%= total.toFixed(2) %></strong></h5>
+            <% } %>
+        </div>
+
+    </body>
+
+</html>

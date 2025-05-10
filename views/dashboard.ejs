@@ -1,0 +1,53 @@
+<!-- views/dashboard.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Dashboard - Punto de Venta</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    </head>
+
+    <body class="bg-light">
+
+        <!-- Inserta la barra de navegación desde la vista parcial 'navbar' -->
+        <%- include('partials/navbar') %>
+
+        <!-- Contenido principal del panel -->
+        <div class="container mt-5 text-center">
+            <!-- Mensaje de bienvenida con el nombre del usuario -->
+            <h3>Bienvenido(a), <%= usuario.nombre %>!</h3>
+
+            <!-- Muestra el rol del usuario en mayúsculas -->
+            <p>Rol: <strong><%= usuario.rol.toUpperCase() %></strong></p>
+
+            <!-- Sección de botones de navegación a los diferentes módulos -->
+            <div class="row mt-4 justify-content-center">
+                <!-- Botón para ir al módulo de Inventario -->
+                <div class="col-md-3 mb-2">
+                    <a href="/inventario" class="btn btn-primary w-100">Ir a Inventario</a>
+                </div>
+
+                <!-- Botón para ir al módulo de Ventas -->
+                <div class="col-md-3 mb-2">
+                    <a href="/ventas" class="btn btn-success w-100">Ir a Ventas</a>
+                </div>
+
+                <!-- Botón para ir al módulo de Compras (solo visible para el rol 'gerente') -->
+                <% if (usuario.rol === 'gerente') { %>
+                    <div class="col-md-3 mb-2">
+                        <a href="/compras" class="btn btn-warning w-100">Ir a Compras</a>
+                    </div>
+                <% } %>
+
+                <!-- Botón para ir al módulo de Cortes de Venta -->
+                <div class="col-md-3 mb-2">
+                    <a href="/cortes" class="btn btn-secondary w-100">Ir a Cortes de Venta</a>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+</html>
